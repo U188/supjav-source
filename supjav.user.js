@@ -71,20 +71,33 @@ SupJav 设备本地浏览器版（csp_GM userscript）
         },
         searchContent: function () { return {list:listVideos(),pagecount:pageCount()}; },
         detailContent: function (ids) {
-            const id=ids[0], name=baseName(), pic=jQuery('.post-meta img.img, .post-meta .img').first().attr('src') || '';
-            const from=[], urls=[];
-            jQuery('.video-wrap .btn-server, .btn-server[data-link]').each(function(i){
-                const token=jQuery(this).attr('data-link'); if(!token)return;
-                const label=clean(jQuery(this).text())||('线路'+(i+1)); from.push(label);
-                urls.push(name+'$'+JSON.stringify({token:token,index:i,detail:location.href}));
+            const id = Array.isArray(ids) ? ids[0] : ids;
+            const name = baseName();
+            const pic = jQuery('.post-meta img.img, .post-meta .img').first().attr('src') || '';
+            const playData = [];
+            jQuery('.video-wrap .btn-server, .btn-server[data-link]').each(function (i) {
+                if (!jQuery(this).attr('data-link')) return;
+                playData.push({
+                    from: clean(jQuery(this).text()) || ('线路' + (i + 1)),
+                    media: [{
+                        name: name,
+                        type: 'webview',
+                        ext: {url: 'https://supjav.com/zh/' + id + '#' + i}
+                    }]
+                });
             });
-            return {list:[{vod_id:id,vod_name:name,vod_pic:pic,vod_content:clean(jQuery('.post-meta .img').attr('alt')),
-                vod_play_from:from.join('$$$'),vod_play_url:urls.join('$$$')}]};
+            return {list:[{
+                vod_id:id,
+                vod_name:name,
+                vod_pic:pic,
+                vod_content:clean(jQuery('.post-meta .img').attr('alt')),
+                vod_play_data:playData
+            }]};
         },
-        playerContent: function (flag,id) {
-            let x={}; try{x=JSON.parse(String(id).split('$').pop())}catch(e){}
-            const btn=document.querySelectorAll('.video-wrap .btn-server, .btn-server[data-link]')[x.index||0];
-            if(btn)btn.dispatchEvent(new Event('click',{bubbles:true}));
+        playerContent: function () {
+            const index = parseInt(window.location.hash.split('#').pop(), 10) || 0;
+            const buttons = document.querySelectorAll('.video-wrap .btn-server, .btn-server[data-link]');
+            if (buttons[index]) buttons[index].dispatchEvent(new Event('click', {bubbles:true}));
             return {type:'match'};
         }
     };
