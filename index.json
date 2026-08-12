@@ -1,0 +1,47 @@
+{
+  "spider": "https://raw.githubusercontent.com/U188/supjav-source/main/GM.jar;md5;c5678e17cb1b7628966a99dd630d9c6b",
+  "sites": [
+    {
+      "key": "supjav_local_webview",
+      "name": "SupJav",
+      "type": 3,
+      "api": "csp_GM",
+      "searchable": 1,
+      "quickSearch": 0,
+      "filterable": 1,
+      "timeout": 90,
+      "ext": {
+        "userScript": "https://raw.githubusercontent.com/U188/supjav-source/main/supjav.user.js",
+        "webViewSettings": {
+          "blockNetworkImage": true,
+          "blockCssAndFont": true,
+          "allowList": [
+            "https://*.supremejav.com/*",
+            "https://fc2stream.tv/*",
+            "https://ajax.googleapis.com/*",
+            "https://*.jwpcdn.com/*",
+            "https://*turbovi*/*",
+            "https://*.tiktokcdn.com/*",
+            "https://streamtape.com/*",
+            "https://*.tapecontent.net/*",
+            "https://voe.sx/*",
+            "https://*.cloudwindow-route.com/*"
+          ]
+        },
+        "playUrlMatch": [
+          "https://fc2stream.tv/*/master.m3u8",
+          "https://*turbovi*/*.m3u8*",
+          "https://streamtape.com/get_video*",
+          "https://*.tapecontent.net/*",
+          "https://*.cloudwindow-route.com/*/index-v1-a1.m3u8*"
+        ],
+        "spider": {
+          "homeContent": {"loadUrl": "https://supjav.com/zh/popular"},
+          "categoryContent": {"loadUrl": "https://supjav.com/zh/${tid}/page/${pg:-1}?sort=${sort:-quantity}"},
+          "detailContent": {"loadUrl": "https://supjav.com/zh/${id}"},
+          "searchContent": {"loadUrl": "https://supjav.com/zh/page/${pg:-1}?s=${key}"}
+        }
+      }
+    }
+  ]
+}
